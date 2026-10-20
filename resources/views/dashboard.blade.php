@@ -2,46 +2,46 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Panel Principal - Login Exitoso</title>
-    <style>
-        body { font-family: Arial, sans-serif; padding: 40px; background: #f4f6f9; }
-        .box { background: white; padding: 20px; border-radius: 8px; max-width: 600px; margin: auto; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
-        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
-        th { background-color: #007bff; color: white; }
-        .status { color: green; font-weight: bold; }
-        button { background: #dc3545; color: white; border: none; padding: 10px 15px; border-radius: 4px; cursor: pointer; margin-top: 15px; }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Control - Portal de Usuario</title>
+    <link rel="stylesheet" href="{{ asset('css/frutiger.css') }}">
 </head>
 <body>
-    <div class="box">
-        <h2>¡Login Exitoso!</h2>
-        <p class="status">✓ Sesión iniciada correctamente en el sistema.</p>
 
-        <h3>Datos del Usuario:</h3>
-        <table>
-            <tr>
-                <th>Campo</th>
-                <th>Valor</th>
-            </tr>
-            <tr>
-                <td>Nombre Completo</td>
-                <td>{{ Auth::user()->name }}</td>
-            </tr>
-            <tr>
-                <td>DNI</td>
-                <td>{{ Auth::user()->dni }}</td>
-            </tr>
-            <tr>
-                <td>Correo Electrónico</td>
-                <td>{{ Auth::user()->email }}</td>
-            </tr>
-        </table>
+    <div class="frutiger-card" style="max-width: 550px; text-align: left;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid rgba(0,77,122,0.2); padding-bottom: 12px;">
+            <h2 class="frutiger-title" style="margin: 0; text-align: left;">Bienvenido/a 👋</h2>
+            <form method="POST" action="{{ route('logout') }}" style="margin: 0;">
+                @csrf
+                <button type="submit" class="frutiger-btn" style="width: auto; padding: 6px 14px; font-size: 13px; margin: 0; background: linear-gradient(180deg, #ff6b6b 0%, #c0392b 100%) !important; border-color: #962d22 !important;">
+                    Cerrar Sesión
+                </button>
+            </form>
+        </div>
 
-        <form action="{{ route('logout') }}" method="POST">
-            @csrf
-            <button type="submit">Cerrar Sesión</button>
-        </form>
+        <p style="font-size: 14px; color: #003352; margin-bottom: 20px;">
+            Has autenticado exitosamente tu cuenta en la plataforma. A continuación se presentan tus datos registrados en el sistema:
+        </p>
+
+        <div style="background: rgba(255, 255, 255, 0.6); border-radius: 12px; padding: 18px; border: 1px solid rgba(255, 255, 255, 0.9); box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);">
+            <div style="margin-bottom: 12px;">
+                <span class="frutiger-label" style="display: inline-block; width: 140px;">Nombre Completo:</span>
+                <span style="font-weight: 700; color: #004b80;">{{ Auth::user()->name }}</span>
+            </div>
+            <div style="margin-bottom: 12px;">
+                <span class="frutiger-label" style="display: inline-block; width: 140px;">Documento (DNI):</span>
+                <span style="font-weight: 700; color: #004b80;">{{ Auth::user()->dni }}</span>
+            </div>
+            <div style="margin-bottom: 0;">
+                <span class="frutiger-label" style="display: inline-block; width: 140px;">Correo Registrado:</span>
+                <span style="font-weight: 700; color: #004b80;">{{ Auth::user()->email }}</span>
+            </div>
+        </div>
+
+        <div style="margin-top: 25px; padding: 12px; background: rgba(18, 216, 250, 0.15); border-radius: 10px; border: 1px solid rgba(18, 216, 250, 0.4); text-align: center; font-size: 13px; color: #004d7a;">
+            🔒 Sesión encriptada mediante algoritmo <strong>Bcrypt</strong> y autenticación segura por Laravel.
+        </div>
     </div>
+
 </body>
 </html>

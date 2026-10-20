@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use Laravel\Socialite\Facades\Socialite;
 
 class AuthController extends Controller
 {
@@ -14,7 +15,7 @@ class AuthController extends Controller
         if (Auth::check()) {
             return redirect()->route('dashboard');
         }
-        return view('auth.login');
+        return view('auth.ingresar');
     }
 
     public function login(Request $request)
@@ -36,7 +37,7 @@ class AuthController extends Controller
 
     public function showRegisterForm()
     {
-        return view('auth.register');
+        return view('auth.registrarse');
     }
 
     public function register(Request $request)
@@ -70,6 +71,27 @@ class AuthController extends Controller
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect()->route('login');
+        return redirect('/login');
+    }
+
+    public function handleGoogleCallback()
+    {
+        $googleUser = Socialite::driver('google')->user();
+        
+        $user = User::where('email', $googleUser->getEmail())->first();
+
+        if (!$user) {
+            $user = User::create([
+                'name' => $googleUser->getName(),
+                'email' => $googleUser->getEmail(),
+                'dni' => 'G-' . rand(1000, 9999),
+                'password' => Hash::make(uniqid()),
+            ]);
+        }
+
+        Auth::login($user);
+        request()->session()->regenerate();
+
+        return redirect()->intended('dashboard');
     }
 }
